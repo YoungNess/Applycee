@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: spacing.lg,
     alignItems: 'center',
+    overflow: 'visible',
   },
   iconContainer: {
     width: 80,
@@ -124,16 +125,20 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary[50],
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: spacing.md,
+    marginBottom: spacing.lg,
+    overflow: 'visible',
   },
   headerIcon: {
     fontSize: 40,
+    lineHeight: 48,
+    overflow: 'visible',
   },
   title: {
     fontSize: typography.fontSize['4xl'],
     fontWeight: typography.fontWeight.bold,
     marginBottom: spacing.sm,
     letterSpacing: -1,
+    overflow: 'visible',
   },
   subtitle: {
     fontSize: typography.fontSize.base,
@@ -177,6 +182,8 @@ const styles = StyleSheet.create({
   },
   cardIcon: {
     fontSize: 28,
+    lineHeight: 32,
+    overflow: 'visible',
   },
   cardText: {
     flex: 1,

@@ -82,6 +82,8 @@ const styles = StyleSheet.create({
     emoji: {
         fontSize: 48,
         marginBottom: spacing.sm,
+        lineHeight: 56,
+        overflow: 'visible',
     },
     subtitle: {
         fontSize: typography.fontSize.base,

@@ -9,6 +9,19 @@ export default function MostProfessionalScreen() {
     const colorScheme = useColorScheme();
     const isDark = colorScheme === 'dark';
 
+    if (!result) {
+        return (
+            <>
+                <Stack.Screen options={{ title: 'Top Professionnel' }} />
+                <View style={[styles.container, { backgroundColor: isDark ? colors.background.dark : colors.background.lightSecondary }]}>
+                    <View style={styles.content}>
+                        <ThemedText>Aucune donnée disponible</ThemedText>
+                    </View>
+                </View>
+            </>
+        );
+    }
+
     return (
         <>
             <Stack.Screen
@@ -70,6 +83,8 @@ const styles = StyleSheet.create({
     emoji: {
         fontSize: 64,
         marginBottom: spacing.lg,
+        lineHeight: 72,
+        overflow: 'visible',
     },
     label: {
         fontSize: typography.fontSize.base,
@@ -91,6 +106,7 @@ const styles = StyleSheet.create({
         marginBottom: spacing.lg,
         textAlign: 'center',
         letterSpacing: -1,
+        overflow: 'visible',
     },
     statsContainer: {
         width: '100%',
@@ -106,6 +122,7 @@ const styles = StyleSheet.create({
         fontSize: typography.fontSize['3xl'],
         fontWeight: typography.fontWeight.bold,
         marginBottom: spacing.xs,
+        overflow: 'visible',
     },
     statLabel: {
         fontSize: typography.fontSize.sm,
