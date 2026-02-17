@@ -1,98 +1,202 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
-
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
+import { StyleSheet, ScrollView, Pressable, View, useColorScheme } from 'react-native';
+import { Link } from 'expo-router';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import { colors, spacing, borderRadius, shadows, typography } from '@/constants/theme';
+
+const menuItems = [
+  {
+    href: '/private-lycees',
+    icon: '🏫',
+    title: 'Lycées Privés',
+    subtitle: 'Paris',
+    gradient: ['#6366F1', '#8B5CF6'],
+  },
+  {
+    href: '/academie-count',
+    icon: '📊',
+    title: 'Statistiques',
+    subtitle: 'Par académie',
+    gradient: ['#EC4899', '#F472B6'],
+  },
+  {
+    href: '/most-professional',
+    icon: '🎓',
+    title: 'Top Professionnel',
+    subtitle: 'Meilleure académie',
+    gradient: ['#14B8A6', '#2DD4BF'],
+  },
+  {
+    href: '/creteil-emails',
+    icon: '✉️',
+    title: 'Contacts',
+    subtitle: 'Emails Créteil',
+    gradient: ['#F59E0B', '#FB923C'],
+  },
+  {
+    href: '/creteil-2026',
+    icon: '📅',
+    title: 'Mises à jour',
+    subtitle: 'Créteil 2026',
+    gradient: ['#3B82F6', '#60A5FA'],
+  },
+];
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === 'dark';
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
+  return (
+    <ScrollView
+      style={[styles.container, { backgroundColor: isDark ? colors.background.dark : colors.background.light }]}
+      showsVerticalScrollIndicator={false}
+    >
+      {/* Header with gradient */}
+      <View style={styles.headerContainer}>
+        <View style={styles.header}>
+          <View style={styles.iconContainer}>
+            <ThemedText style={styles.headerIcon}>🎓</ThemedText>
+          </View>
+          <ThemedText style={styles.title}>LyceeApp</ThemedText>
+          <ThemedText style={[styles.subtitle, { color: isDark ? colors.text.dark.secondary : colors.text.light.secondary }]}>
+            Découvrez les lycées d'Île-de-France
+          </ThemedText>
+        </View>
+      </View>
+
+      {/* Menu Cards */}
+      <View style={styles.menuContainer}>
+        {menuItems.map((item, index) => (
+          <Link key={index} href={item.href as any} asChild>
+            <Pressable
+              style={({ pressed }) => [
+                styles.menuCard,
+                pressed && styles.menuCardPressed,
+              ]}
+            >
+              <View style={styles.cardContent}>
+                <View style={styles.cardLeft}>
+                  <View style={[styles.iconBadge, { backgroundColor: isDark ? colors.gray[800] : colors.gray[100] }]}>
+                    <ThemedText style={styles.cardIcon}>{item.icon}</ThemedText>
+                  </View>
+                  <View style={styles.cardText}>
+                    <ThemedText style={styles.cardTitle}>{item.title}</ThemedText>
+                    <ThemedText style={[styles.cardSubtitle, { color: isDark ? colors.text.dark.tertiary : colors.text.light.tertiary }]}>
+                      {item.subtitle}
+                    </ThemedText>
+                  </View>
+                </View>
+                <View style={styles.arrow}>
+                  <ThemedText style={{ fontSize: 20, opacity: 0.4 }}>→</ThemedText>
+                </View>
+              </View>
+            </Pressable>
+          </Link>
+        ))}
+      </View>
+
+      {/* Footer */}
+      <View style={styles.footer}>
+        <ThemedText style={[styles.footerText, { color: isDark ? colors.text.dark.tertiary : colors.text.light.tertiary }]}>
+          75 lycées • 3 académies
         </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
+  container: {
+    flex: 1,
+  },
+  headerContainer: {
+    paddingTop: spacing.xxl,
+    paddingBottom: spacing.xl,
+  },
+  header: {
+    paddingHorizontal: spacing.lg,
+    alignItems: 'center',
+  },
+  iconContainer: {
+    width: 80,
+    height: 80,
+    borderRadius: borderRadius.full,
+    backgroundColor: colors.primary[50],
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: spacing.md,
+  },
+  headerIcon: {
+    fontSize: 40,
+  },
+  title: {
+    fontSize: typography.fontSize['4xl'],
+    fontWeight: typography.fontWeight.bold,
+    marginBottom: spacing.sm,
+    letterSpacing: -1,
+  },
+  subtitle: {
+    fontSize: typography.fontSize.base,
+    textAlign: 'center',
+    lineHeight: 24,
+  },
+  menuContainer: {
+    paddingHorizontal: spacing.lg,
+    gap: spacing.md,
+    paddingBottom: spacing.xl,
+  },
+  menuCard: {
+    backgroundColor: 'white',
+    borderRadius: borderRadius.lg,
+    padding: spacing.lg,
+    ...shadows.sm,
+    borderWidth: 1,
+    borderColor: colors.gray[200],
+  },
+  menuCardPressed: {
+    opacity: 0.7,
+    transform: [{ scale: 0.98 }],
+  },
+  cardContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    justifyContent: 'space-between',
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  cardLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  iconBadge: {
+    width: 56,
+    height: 56,
+    borderRadius: borderRadius.md,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: spacing.md,
+  },
+  cardIcon: {
+    fontSize: 28,
+  },
+  cardText: {
+    flex: 1,
+  },
+  cardTitle: {
+    fontSize: typography.fontSize.lg,
+    fontWeight: typography.fontWeight.semibold,
+    marginBottom: 2,
+  },
+  cardSubtitle: {
+    fontSize: typography.fontSize.sm,
+  },
+  arrow: {
+    marginLeft: spacing.sm,
+  },
+  footer: {
+    paddingVertical: spacing.xl,
+    alignItems: 'center',
+  },
+  footerText: {
+    fontSize: typography.fontSize.sm,
   },
 });
